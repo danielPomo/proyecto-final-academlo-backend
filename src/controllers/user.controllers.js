@@ -10,10 +10,7 @@ const createUser = async (req, res, next) => {
       password,
     });
     await UserServices.sendMail(email);
-    console.log("antes de crear cart en controller de user");
     const cart = await CartServices.createNewCart(user.id);
-    console.log(cart);
-    console.log("despues de crear cart en controller de user");
     res.status(201).json(cart);
   } catch (error) {
     next(error);

@@ -9,7 +9,6 @@ const createProduct = async ({
   userId,
   productImage,
 }) => {
-  console.log("desde el inicio del product repository");
   await Product.create({
     name,
     description,
@@ -27,6 +26,7 @@ const editProduct = async ({
   price,
   status,
   productImage,
+  availableQty,
 }) => {
   await Product.update(
     {
@@ -35,6 +35,7 @@ const editProduct = async ({
       price,
       status,
       productImage,
+      availableQty,
     },
     {
       where: { id },

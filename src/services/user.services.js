@@ -15,7 +15,6 @@ class UserServices {
       const hashed = await bcrypt.hash(password, 10);
       return createUser({ username, email, password: hashed });
     } catch (error) {
-      console.log(error);
       throw error;
     }
   }
@@ -23,14 +22,10 @@ class UserServices {
   static async logNewUser({ email, password }) {
     try {
       const user = await logUser({ email, password });
-      console.log(user);
-      console.log("3--");
       if (!user) {
         throw new Error("email does not exist");
       }
-      console.log("4--");
       const validPassword = await bcrypt.compare(password, user.password);
-      console.log("5--");
       if (!validPassword) {
         throw new Error("The password is not correct");
       }

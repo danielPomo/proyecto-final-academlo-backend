@@ -2,7 +2,6 @@ const ProductServices = require("../services/product.services");
 
 const createProduct = async (req, res, next) => {
   try {
-    console.log("inicio del product controller");
     const { name, description, price, availableQty, userId, productImage } =
       req.body;
     await ProductServices.createNewProduct({
@@ -13,7 +12,7 @@ const createProduct = async (req, res, next) => {
       userId,
       productImage,
     });
-    console.log("despues de volver de servicios del product");
+
     res.status(201).send();
   } catch (error) {
     next(error);
@@ -23,7 +22,8 @@ const createProduct = async (req, res, next) => {
 const editProduct = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { name, description, price, status, productImage } = req.body;
+    const { name, description, price, status, productImage, availableQty } =
+      req.body;
     await ProductServices.editProductInfo({
       id,
       name,
@@ -31,6 +31,7 @@ const editProduct = async (req, res, next) => {
       price,
       status,
       productImage,
+      availableQty,
     });
     res.status(204).send();
   } catch (error) {

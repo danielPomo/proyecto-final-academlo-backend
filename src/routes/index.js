@@ -4,7 +4,6 @@ const cartRoutes = require("../routes/cart.routes");
 const orderRoutes = require("../routes/order.routes");
 
 const apiRouter = (app) => {
-  console.log("Desde api router");
   app.use(userRoutes);
   app.use(productRoutes);
   app.use(cartRoutes);

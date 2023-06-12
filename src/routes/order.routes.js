@@ -28,6 +28,6 @@ router.get(
   getAllOrdersByUser
 );
 
-router.put("/orders/users/:userId", authenticate, checkOutValidator, checkOut);
+router.put("/orders/:orderId/users", authenticate, checkOutValidator, checkOut);
 
 module.exports = router;

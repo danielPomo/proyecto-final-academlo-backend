@@ -14,7 +14,6 @@ class ProductServices {
     productImage,
   }) {
     try {
-      console.log("desde el services del product");
       return createProduct({
         name,
         description,
@@ -35,6 +34,7 @@ class ProductServices {
     price,
     status,
     productImage,
+    availableQty,
   }) {
     try {
       return editProduct({
@@ -44,6 +44,7 @@ class ProductServices {
         price,
         status,
         productImage,
+        availableQty,
       });
     } catch (error) {
       throw error;

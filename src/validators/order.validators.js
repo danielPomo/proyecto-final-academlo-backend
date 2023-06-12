@@ -9,22 +9,6 @@ const createOrderWhenPurchasingCartValidator = [
     .withMessage("El campo userId no debe estar vacío")
     .isInt()
     .withMessage("El tipo de dato del campo userId debe ser un número entero"),
-  check("totalPrice", "Error en el campo totalPrice")
-    .exists()
-    .withMessage(
-      "El campo totalPrice es requerido como propiedad de la petición"
-    )
-    .notEmpty()
-    .withMessage("El campo totalPrice no debe estar vacío")
-    .isCurrency({
-      require_symbol: false,
-      allow_negatives: false,
-      decimal_separator: ".",
-      allow_decimal: true,
-    })
-    .withMessage(
-      "El tipo de dato del campo totalPrice debe ser un número decimal que represente un precio, no requiere símbolo de moneda, no puede ser negativo, para separar los decimales se usa una coma, y debe especificar siempre dos dígitos decimales."
-    ),
   check("status", "Error en el campo status")
     .optional()
     .notEmpty()
