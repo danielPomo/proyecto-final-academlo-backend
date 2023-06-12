@@ -36,7 +36,7 @@ const createProductValidator = [
       allow_decimal: true,
     })
     .withMessage(
-      "El tipo de dato del campo price debe ser un número decimal que represente un precio, no requiere símbolo de moneda, no puede ser negativo, para separar los decimales se usa una coma, y debe especificar siempre dos dígitos decimales."
+      "El tipo de dato del campo price debe ser un número entrero o decimal que represente un precio, no requiere símbolo de moneda, no puede ser negativo, para separar los decimales se usa una coma, y debe especificar siempre dos dígitos decimales."
     ),
   check("availableQty", "Error en el campo availableQty")
     .exists()

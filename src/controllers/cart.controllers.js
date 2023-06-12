@@ -15,7 +15,7 @@ const getProductsInCart = async (req, res, next) => {
   try {
     const { cartId } = req.params;
     const productsInCart = await CartServices.getAllProductsInCart(cartId);
-    res.json(productsInCart);
+    res.status(200).json(productsInCart);
   } catch (error) {
     next(error);
   }

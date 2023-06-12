@@ -1,0 +1,642 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Ecommerce API",
+    "description": "Esta es una API para un ecommerce que, entre otras cosas, permite: crear usuarios, loguearlos, crear un carrito, agregar productos al carrito, generar una orden de compra y publicar productos para vender.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/users": {
+      "post": {
+        "summary": "Crear usuarios",
+        "description": "Para crear un usuario es necesario proporcionar: un username (cadena de texto entre 6 y 20 caracteres inclusive), un email y una password (cadena de texto entre 8 y 20 caracteres)",
+        "tags": ["users"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/register" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "El usuario fue creado satisfactoriamente"
+          },
+          "400": {
+            "description": "Faltan propiedades en el body de la petición",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Validation Error"
+                    },
+                    "message": {
+                      "type": "array",
+                      "items": {
+                        "0": {
+                          "type": "string",
+                          "example": "El campo username es requerido como propiedad de la petición"
+                        },
+                        "1": {
+                          "type": "string",
+                          "example": "El campo username no debe estar vacío"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "summary": "Loguear un usuario",
+        "description": "Para poder loguear un asuario en la tienda se debe enviar un email y password válidos.",
+        "tags": ["users"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/login" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "El usuario se ha logueado de modo exitoso"
+          },
+          "400": {
+            "description": "Faltan propiedades en el body de la petición",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Validation Error"
+                    },
+                    "message": {
+                      "type": "array",
+                      "items": {
+                        "0": {
+                          "type": "string",
+                          "example": "El campo email es requerido como propiedad de la petición"
+                        },
+                        "1": {
+                          "type": "string",
+                          "example": "El campo password no debe estar vacío"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}/profile": {
+      "put": {
+        "summary": "Editar usuario",
+        "description": "Editar ávatar y descripción del usuario. Debe enviarse el id del usuario como parámetro de la ruta, junto con las propiedades a editar (las editables son avatar y username. El campo avatar es una url de una imágen",
+        "tags": ["users"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "id del usuario que se va a actualizar"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/updateUser" }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "El usuario se ha modificado exitosamente"
+          },
+          "400": {
+            "description": "Faltan propiedades en el body de la petición",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Validation Error"
+                    },
+                    "message": {
+                      "type": "array",
+                      "items": {
+                        "0": {
+                          "type": "string",
+                          "example": "El campo avatar debe ser una url"
+                        },
+                        "1": {
+                          "type": "string",
+                          "example": "El campo username no puede actualizarse a una cadena de texto vacía"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/product": {
+      "post": {
+        "summary": "Crear productos",
+        "description": "Para crear un usuario es necesario proporcionar: un name (cadena de texto de hasta 255 caracteres), el campo description, el campo price (número real con dos decimales, para indicar decimales se una el punto, el campo availableQty debe ser un número entero positivo, el campo userId debe ser un entero positivo , productImage debe ser una cadena de texto con formato de url",
+        "tags": ["products"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/createProduct" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "El producto fue creado satisfactoriamente"
+          },
+          "400": {
+            "description": "Faltan propiedades en el body de la petición",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Validation Error"
+                    },
+                    "message": {
+                      "type": "array",
+                      "items": {
+                        "0": {
+                          "type": "string",
+                          "example": "El campo userId es requerido como propiedad de la petición"
+                        },
+                        "1": {
+                          "type": "string",
+                          "example": "El campo availableQty no debe estar vacío"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{id}/description": {
+      "put": {
+        "summary": "Editar información del producto",
+        "description": "Editar los campos name, description, price, status, productImage, availableQty",
+        "tags": ["products"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "id del producto que se va a actualizar"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/updateProduct" }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "El usuario se ha modificado exitosamente"
+          },
+          "400": {
+            "description": "Faltan propiedades en el body de la petición",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Validation Error"
+                    },
+                    "message": {
+                      "type": "array",
+                      "items": {
+                        "0": {
+                          "type": "string",
+                          "example": "El campo productImage debe ser una url"
+                        },
+                        "1": {
+                          "type": "string",
+                          "example": "El campo name no puede actualizarse a una cadena de texto vacía"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "summary": "Ver todos los productos con stock / disponibles",
+        "description": "Obtener todos los productos disponibles de la tienda",
+        "tags": ["products"],
+        "responses": {
+          "200": {
+            "description": "Lista obtenida exitosamente"
+          },
+          "500": {
+            "description": "Error en el servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Server connection error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "La conexión con el servidor no pudo ser establecida"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/user/{userId}": {
+      "post": {
+        "summary": "Crear una orden de compra",
+        "description": "Para crear un usuario es necesario proporcionar: un name (cadena de texto de hasta 255 caracteres), el campo description, el campo price (número real con dos decimales, para indicar decimales se una el punto, el campo availableQty debe ser un número entero positivo, el campo userId debe ser un entero positivo , productImage debe ser una cadena de texto con formato de url",
+        "tags": ["orders"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "description": "userId identificando al usuario que va a generar la orden de compra"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "La orden fue creada satisfactoriamente"
+          },
+          "400": {
+            "description": "Faltan propiedades en la ruta de la petición",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Validation Error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Falta indicar userId asociado a este orden"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/users/{userId}": {
+      "get": {
+        "summary": "Ver todas las órdenes asociadas a un usuario",
+        "description": "Obtener todas las órdenes de compra asociadas a un userId particular",
+        "tags": ["orders"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "description": "userId identificando al usuario que genero la orden de compra"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista obtenida exitosamente"
+          },
+          "500": {
+            "description": "Error en el servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Server connection error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "La conexión con el servidor no pudo ser establecida"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{orderId}/users": {
+      "put": {
+        "summary": "Comprar orden generada",
+        "description": "Al comprar los productos que aparecen en la orden, el carrio se vacía, los productos se marcan como comprados, y se actualizan las cantidades disponibles del stock de productos",
+        "tags": ["orders"],
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "description": "orderId es el identificador de la orden de compra que se va a finalizar (comprar)"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "La compra se ha realizado de manera exitosa"
+          },
+          "500": {
+            "description": "Error en el servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Server connection error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "La conexión con el servidor no pudo ser establecida"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cart/{cartId}/products": {
+      "post": {
+        "summary": "Agregar al carrito",
+        "description": "Permite agregar productos al carrito. Debe indicarse el cartId por parámetro de ruta, y productId, price y qty como propiedades del body de la petición",
+        "tags": ["carts"],
+        "parameters": [
+          {
+            "name": "cartId",
+            "in": "path",
+            "required": true,
+            "description": "cartId es el identificador del carrito donde se va a agregar la compra, está unívocamente relacionado al userId, el carrito se crea al crear el usuario, por lo que userId es igual a cartId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/addToCart" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "El producto fue agregado exitosamente"
+          },
+          "400": {
+            "description": "Faltan propiedades en el body de la petición",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Validation Error"
+                    },
+                    "message": {
+                      "type": "array",
+                      "items": {
+                        "0": {
+                          "type": "integer",
+                          "example": "El campo productId es requerido como propiedad de la petición"
+                        },
+                        "1": {
+                          "type": "integer",
+                          "example": "El campo qty no debe estar vacío"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/carts/{cartId}/products": {
+      "get": {
+        "summary": "Ver todos los productosde un carrito",
+        "description": "Obtener todos los productos dentro del carrito. En necesario indicar el cartId através de los parámetros de la ruta",
+        "tags": ["carts"],
+        "parameters": [
+          {
+            "name": "cartId",
+            "in": "path",
+            "required": true,
+            "description": "cartId es el identificador del carrito donde se va a agregar la compra, está unívocamente relacionado al userId, el carrito se crea al crear el usuario, por lo que userId es igual a cartId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista obtenida exitosamente"
+          },
+          "500": {
+            "description": "Error en el servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Server connection error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "La conexión con el servidor no pudo ser establecida"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "register": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "daniel2023"
+          },
+          "email": {
+            "type": "string",
+            "example": "daniel2023@email.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "12345678"
+          }
+        }
+      },
+      "login": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "daniel2023@email.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "12345678"
+          }
+        }
+      },
+      "updateUser": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "games4ever23"
+          },
+          "image": {
+            "type": "string",
+            "example": "https://imagen-de-mi-rostro.png"
+          }
+        }
+      },
+      "createProduct": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Vestido de fiesta"
+          },
+          "description": {
+            "type": "string",
+            "example": "Hermoso vestido de seda en tono metalizado, talle S"
+          },
+          "price": {
+            "type": "real",
+            "example": "245.86"
+          },
+          "availableQty": {
+            "type": "integer",
+            "example": "26"
+          },
+          "userId": {
+            "type": "integer",
+            "example": "1"
+          },
+          "productImage": {
+            "type": "string",
+            "example": "https://articulo-1-vestido-de-fiesta.png"
+          }
+        }
+      },
+      "updateProduct": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Vestido de casamiento"
+          },
+          "description": {
+            "type": "string",
+            "example": "Vestido blanco con encajes"
+          },
+          "price": {
+            "type": "real",
+            "example": "450.38"
+          },
+          "status": {
+            "type": "enum",
+            "example": "available"
+          },
+          "availableQty": {
+            "type": "integer",
+            "example": "58"
+          },
+          "productImage": {
+            "type": "string",
+            "example": "https://imagen-de-la-prenda.png"
+          }
+        }
+      },
+      "addToCart": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "example": "2"
+          },
+          "price": {
+            "type": "real",
+            "example": "450.38"
+          },
+          "qty": {
+            "type": "integer",
+            "example": "2"
+          }
+        }
+      }
+    }
+  }
+}

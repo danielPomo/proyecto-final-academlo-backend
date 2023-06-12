@@ -9,14 +9,6 @@ const createOrderWhenPurchasingCartValidator = [
     .withMessage("El campo userId no debe estar vacío")
     .isInt()
     .withMessage("El tipo de dato del campo userId debe ser un número entero"),
-  check("status", "Error en el campo status")
-    .optional()
-    .notEmpty()
-    .withMessage("El campo status no debe estar vacío")
-    .isString()
-    .withMessage(
-      "El tipo de dato del campo status debe ser una cadena de texto"
-    ),
   validateResult,
 ];
 

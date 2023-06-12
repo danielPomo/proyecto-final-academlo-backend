@@ -14,7 +14,7 @@ const {
 const authenticate = require("../middlewares/authentication.middleware");
 
 router.post(
-  "/carts/:cartId/products",
+  "/cart/:cartId/products",
   authenticate,
   addProductToCartValidator,
   addProductToCart

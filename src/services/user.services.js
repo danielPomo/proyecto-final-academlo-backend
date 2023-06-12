@@ -31,7 +31,7 @@ class UserServices {
       }
       const { id, username, avatar } = user;
       const userData = { id, username, email, avatar };
-      const token = jwt.sign(userData, "ecommerce", {
+      const token = jwt.sign(userData, process.env.JWT_SECRET_WORD, {
         algorithm: "HS512",
         expiresIn: "2 days",
       });

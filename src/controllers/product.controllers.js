@@ -42,7 +42,7 @@ const editProduct = async (req, res, next) => {
 const getAvailableProducts = async (req, res, next) => {
   try {
     const availableProducts = await ProductServices.getProductsInStock();
-    res.json(availableProducts);
+    res.status(200).json(availableProducts);
   } catch (error) {
     next(error);
   }

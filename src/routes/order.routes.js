@@ -15,7 +15,7 @@ const {
 const authenticate = require("../middlewares/authentication.middleware");
 
 router.post(
-  "/orders/users/:userId",
+  "/orders/user/:userId",
   authenticate,
   createOrderWhenPurchasingCartValidator,
   createOrderWhenPurchasingCart

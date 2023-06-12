@@ -14,7 +14,7 @@ const {
 
 const authenticate = require("../middlewares/authentication.middleware");
 
-router.post("/products", authenticate, createProductValidator, createProduct);
+router.post("/product", authenticate, createProductValidator, createProduct);
 
 router.put(
   "/products/:id/description",

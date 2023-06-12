@@ -21,7 +21,7 @@ const logUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const userData = await UserServices.logNewUser({ email, password });
-    res.json(userData);
+    res.status(200).json(userData);
   } catch (error) {
     next(error);
   }
